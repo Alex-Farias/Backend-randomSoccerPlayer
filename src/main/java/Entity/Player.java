@@ -1,61 +1,55 @@
 package Entity;
 
-import org.example.Main;
-
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
-import static java.util.Collections.replaceAll;
+import Function.Util;
 
 public class Player {
+    private static final int BASEAGE = 17;
+    private static final int RANGEAGE = 23;
     private final String name;
     private final String fisrtName;
     private final String club;
     private final String position;
-    private final int idade;
+    private final int age;
 
-    public static String publicNewPlayerDeclaration(String playerName, String playerFirstName, String playerClub, String playerPosition, String playerIdade){
+    public static String publicNewPlayerDeclaration(String playerName, String playerFirstName, String playerClub, String playerPosition, String playerAge){
         String declaration;
-        declaration = "Nova estrela do futebol " + playerName + " " + playerFirstName + " de " +
-                playerIdade + " anos de idade está começando sua carreira no " +
+        declaration = "Nova estrela do futebol! " + playerName + " " + playerFirstName + " de " +
+                playerAge + " anos de idade está começando sua carreira no " +
                 playerClub + " como " + playerPosition + "!";
         return declaration;
     }
 
     public Player() throws Exception{
-        String[] name = Main.setCamelCase(Main.parseList(
-                Main.getListByUri(Main.URINAMES),
-                Main.BREAKLINE
+        String[] name = Util.setCamelCase(Util.parseList(
+                Util.getListByUri(Util.URINAMES),
+                Util.BREAKLINE
         ));
-        String[] fisrtName = Main.setCamelCase(Main.parseList(
-                Main.getListByUri(Main.URIFIRSTNAMES),
-                Main.BREAKLINE
+        String[] fisrtName = Util.setCamelCase(Util.parseList(
+                Util.getListByUri(Util.URIFIRSTNAMES),
+                Util.BREAKLINE
         ));
-        String[] club = Main.parseList(
-                Main.getListByUri(Main.URICLUBS),
-                Main.BREAKLINE
+        String[] club = Util.parseList(
+                Util.getListByUri(Util.URICLUBS),
+                Util.BREAKLINE
         );
-        String[] position = Main.setCamelCase(Main.parseList(
-                Main.getListByUri(Main.URIPLAYERPOSITIONS).replaceAll("\"", ""),
-                ",\n"
+        String[] position = Util.setCamelCase(Util.parseList(
+                Util.getListByUri(Util.URIPLAYERPOSITIONS).replaceAll(Util.DOUBLEQUOTES, Util.EMPTYSTRING),
+                Util.COMMA + Util.BREAKLINE
         ));
-        int idade = Main.randomIndex(23, 17);
 
-        this.name = name[Main.randomIndex(name.length, 0)];
-        this.fisrtName = fisrtName[Main.randomIndex(fisrtName.length, 0)];
-        this.club = club[Main.randomIndex(club.length, 0)];
-        this.position = position[Main.randomIndex(position.length, 0)];
-        this.idade = idade;
+        this.name = Util.randomStringByArray(name);
+        this.fisrtName = Util.randomStringByArray(fisrtName);
+        this.club = Util.randomStringByArray(club);
+        this.position = Util.randomStringByArray(position);
+        this.age = Util.randomIndexWithBase(RANGEAGE, BASEAGE);
     }
 
-    public Player(String name, String fisrtName, String club, String position, int idade){
+    public Player(String name, String fisrtName, String club, String position, int age){
         this.name = name;
         this.fisrtName = fisrtName;
         this.club = club;
         this.position = position;
-        this.idade = idade;
+        this.age = age;
     }
 
     public String getName(){
@@ -74,7 +68,7 @@ public class Player {
         return this.position;
     }
 
-    public String getIdade(){
-        return String.valueOf(this.idade);
+    public String getAgeAsString(){
+        return String.valueOf(this.age);
     }
 }
